@@ -13,7 +13,7 @@ export default createGlobalStyle`
   }
 
   body{
-    background: #eee;
+    background: #DAE0E6;
     -webkit-font-smooting: antialiased !important;
   }
 `;
