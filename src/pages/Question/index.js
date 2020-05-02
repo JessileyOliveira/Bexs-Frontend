@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Container } from './styles';
 import NewQuestion from './NewQuestion';
 import ItemQuestion from './ItemQuestion';
 
+import LoadingComponent from '../../components/Loading';
+
 export default function Question() {
-  // const [listQuestion, setListQuestion]
+  const [loading, setLoading] = useState(true);
+  const [listQuestion, setListQuestion] = useState([]);
   return (
     <Container>
       <NewQuestion />
@@ -24,6 +27,7 @@ export default function Question() {
           created_at: '2020-04-30 22:12:05',
         }}
       />
+      {loading && <LoadingComponent />}
     </Container>
   );
 }
