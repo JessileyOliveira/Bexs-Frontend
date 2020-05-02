@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   width: 1020px;
-  margin: 10px auto;
+  margin: 12px auto;
 `;
 
 export const NewQuestionContainer = styled.div`

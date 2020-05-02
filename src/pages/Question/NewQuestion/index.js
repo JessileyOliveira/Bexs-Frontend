@@ -7,7 +7,7 @@ import {
   FormButtonContainer,
 } from './styles';
 
-export default function Question() {
+export default function NewQuestion() {
   const [inputName, setInputName] = useState('');
   const [inputText, setInputText] = useState('');
 
