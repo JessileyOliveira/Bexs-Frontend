@@ -18,14 +18,6 @@ export const ItemQuestionContainer = styled.div`
     text-decoration: none;
   }
 `;
-
-export const Title = styled.div`
-  color: #0079d3;
-  width: 100%;
-  font-weight: bold;
-  font-size: 18px;
-`;
-
 export const Question = styled.h4`
   color: #444;
   width: 100%;

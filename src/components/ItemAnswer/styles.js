@@ -15,13 +15,6 @@ export const ItemAnswerContainer = styled.div`
   box-shadow: -2px 4px 5px 0px rgba(50, 50, 50, 0.41);
 `;
 
-export const Title = styled.div`
-  color: #0079d3;
-  width: 100%;
-  font-weight: bold;
-  font-size: 18px;
-`;
-
 export const Answer = styled.h4`
   color: #444;
   width: 100%;

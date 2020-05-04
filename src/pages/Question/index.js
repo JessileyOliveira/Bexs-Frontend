@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+import api from '../../services/axios';
+import ItemQuestion from '../../components/ItemQuestion';
+import LoadingComponent from '../../components/Loading';
+
 import {
   Container,
   NewQuestionContainer,
@@ -9,11 +14,6 @@ import {
   ListQuestion,
   NoQuestions,
 } from './styles';
-import ItemQuestion from '../../components/ItemQuestion';
-
-import api from '../../services/axios';
-
-import LoadingComponent from '../../components/Loading';
 
 export default function Question() {
   const [loading, setLoading] = useState(true);
@@ -22,6 +22,21 @@ export default function Question() {
   const [inputText, setInputText] = useState('');
   const [errorInputName, setErrorInputName] = useState(false);
   const [errorInputText, setErrorInputText] = useState(false);
+
+  const getQuestions = async () => {
+    try {
+      const questions = await api.get(`/questions?perPage=9999`);
+      setListQuestion(questions.data.data);
+      setLoading(false);
+    } catch (err) {
+      toast.error('Erro ao consultar Perguntas, contate o administrador!');
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getQuestions();
+  }, []);
 
   const validate = () => {
     let error = false;
@@ -41,8 +56,8 @@ export default function Question() {
     return error;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     try {
       if (!validate()) {
         const newQuestion = await api.post(`/questions`, {
@@ -57,25 +72,11 @@ export default function Question() {
         setInputName('');
         setInputText('');
       }
-    } catch (e) {
+    } catch (err) {
       toast.error('Erro ao cadastrar pergunta, contate o administrador!');
     }
   };
 
-  const getQuestions = async () => {
-    try {
-      const questions = await api.get(`/questions?perPage=9999`);
-      setListQuestion(questions.data.data);
-      setLoading(false);
-    } catch (e) {
-      toast.error('Erro ao consultar Perguntas, contate o administrador!');
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getQuestions();
-  }, []);
   return (
     <Container>
       <NewQuestionContainer data-testid="newQuestionContainer">

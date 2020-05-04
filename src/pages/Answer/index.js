@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useParams, Link } from 'react-router-dom';
 import pt from 'date-fns/locale/pt-BR';
 import { formatDistance } from 'date-fns';
-import 'react-toastify/dist/ReactToastify.css';
+
+import api from '../../services/axios';
+import LoadingComponent from '../../components/Loading';
+import ItemAnswer from '../../components/ItemAnswer';
 
 import {
   Container,
@@ -17,14 +21,9 @@ import {
   BackContainer,
   NoAnswers,
 } from './styles';
-import ItemAnswer from '../../components/ItemAnswer';
-
-import api from '../../services/axios';
-
-import LoadingComponent from '../../components/Loading';
 
 export default function Answer() {
-  let { question_id } = useParams();
+  const { question_id } = useParams();
   const [loading, setLoading] = useState(true);
   const [question, setQuestion] = useState({});
   const [inputName, setInputName] = useState('');
@@ -39,7 +38,7 @@ export default function Answer() {
       );
       setQuestion(questionById.data);
       setLoading(false);
-    } catch (e) {
+    } catch (err) {
       toast.error('Erro ao consultar respostas, contate o administrador!');
       setLoading(false);
     }
@@ -66,8 +65,8 @@ export default function Answer() {
     return error;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     try {
       if (!validate()) {
         const newAnswer = await api.post(`/questions/${question_id}/answers`, {
@@ -83,7 +82,7 @@ export default function Answer() {
         setInputName('');
         setInputText('');
       }
-    } catch (e) {
+    } catch (err) {
       toast.error('Erro ao cadastrar resposta, contate o administrador!');
     }
   };
