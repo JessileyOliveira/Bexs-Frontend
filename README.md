@@ -1,68 +1,84 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Bexs Perguntas e Respostas - Frontend
 
-## Available Scripts
+> Sistema de perguntas e respostas
 
-In the project directory, you can run:
+## Instalação
 
-### `yarn start`
+Você deverá ter em sua máquina os seguinte itens:
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- [Git](http://git-scm.com/)
+- [Node.js](http://nodejs.org/) 10.0.0 (ou superior)
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+1. Faça um Fork ou clone este repositório.
 
-### `yarn test`
+2. Instale as dependências do projeto:
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+   ```sh
+   npm install
+   ```
 
-### `yarn build`
+   ou se você usa yarn:
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+   ```sh
+   yarn
+   ```
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+3) Tenha o [Bexs-Backend](https://github.com/JessileyOliveira/Bexs-backend) rodando em sua máquina no endereço `localhost:3333` (caso queira outro endereço altere o arquivo `./src/services/axios.js` para o endereço desejado).
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Execução
 
-### `yarn eject`
+Para início da aplicação, execute:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+#### `Desenvolvimento:`
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```sh
+npm start
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+ou se você usa yarn:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```sh
+yarn start
+```
 
-## Learn More
+#### `Produção:`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```sh
+npm run build
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+ou se você usa yarn:
 
-### Code Splitting
+```sh
+yarn build
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+_Isso ira criar a pasta `build` com os arquivos para produção._
 
-### Analyzing the Bundle Size
+## Testes:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+_Os testes estão localizados na pasta `__tests__`._
 
-### Making a Progressive Web App
+Use o comando abaixo para executar os testes:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+```sh
+npm test
+```
 
-### Advanced Configuration
+ou se você usa yarn:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+```sh
+yarn test
+```
 
-### Deployment
+## Páginas
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+### `Perguntas:`
 
-### `yarn build` fails to minify
+> Página responsável pela listagem e cadastro das perguntas, também é possível ver o autor, data e quantidade de respostas de cada pergunta.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+#
+
+### `Respostas:`
+
+> Página responsável pela listagem e cadastro das respostas de uma pergunta, também é possível ver o autor e data das respostas.
