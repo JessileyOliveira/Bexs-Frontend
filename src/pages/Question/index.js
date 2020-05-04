@@ -1,33 +1,146 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {
+  Container,
+  NewQuestionContainer,
+  Title,
+  FormButtonContainer,
+  ListQuestion,
+  NoQuestions,
+} from './styles';
+import ItemQuestion from '../../components/ItemQuestion';
 
-import { Container } from './styles';
-import NewQuestion from './NewQuestion';
-import ItemQuestion from './ItemQuestion';
+import api from '../../services/axios';
 
 import LoadingComponent from '../../components/Loading';
 
 export default function Question() {
   const [loading, setLoading] = useState(true);
   const [listQuestion, setListQuestion] = useState([]);
+  const [inputName, setInputName] = useState('');
+  const [inputText, setInputText] = useState('');
+  const [errorInputName, setErrorInputName] = useState(false);
+  const [errorInputText, setErrorInputText] = useState(false);
+
+  const validate = () => {
+    let error = false;
+    if (inputName.length < 3) {
+      setErrorInputName(true);
+      error = true;
+    } else {
+      setErrorInputName(false);
+    }
+    if (inputText.length < 10) {
+      setErrorInputText(true);
+      error = true;
+    } else {
+      setErrorInputText(false);
+    }
+
+    return error;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (!validate()) {
+        const newQuestion = await api.post(`/questions`, {
+          user: inputName,
+          text: inputText,
+        });
+        newQuestion.data.created_at = newQuestion.data.createdAt;
+        newQuestion.data.answersCount = '0';
+        setListQuestion([newQuestion.data, ...listQuestion]);
+
+        toast.success('Pergunta cadastrada com sucesso!');
+        setInputName('');
+        setInputText('');
+      }
+    } catch (e) {
+      toast.error('Erro ao cadastrar pergunta, contate o administrador!');
+    }
+  };
+
+  const getQuestions = async () => {
+    try {
+      const questions = await api.get(`/questions?perPage=9999`);
+      setListQuestion(questions.data.data);
+      setLoading(false);
+    } catch (e) {
+      toast.error('Erro ao consultar Perguntas, contate o administrador!');
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getQuestions();
+  }, []);
   return (
     <Container>
-      <NewQuestion />
-      <ItemQuestion
-        object={{
-          user: 'Jessiley Olioveira',
-          text: 'Minha pergunta vem aqui?',
-          created_at: '2020-05-02 13:12:05',
-        }}
-      />
-      <ItemQuestion
-        object={{
-          user: 'Jessiley Olioveira',
-          text:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lorem risus, venenatis non facilisis a, porttitor quis metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus condimentum dictum lorem, nec lobortis odio malesuada eu. Aenean hendrerit tempus nibh non aliquam. Sed at quam eu nisl egestas facilisis. Morbi et lectus at tellus feugiat convallis ut sit amet risus. Cras viverra nisl ac suscipit aliquam. Ut diam elit, tincidunt vel quam quis, consectetur facilisis sapien. Suspendisse semper tristique lobortis. Curabitur accumsan nec erat non ultricies.?',
-          created_at: '2020-04-30 22:12:05',
-        }}
-      />
-      {loading && <LoadingComponent />}
+      <NewQuestionContainer data-testid="newQuestionContainer">
+        <Title>NOVA PERGUNTA:</Title>
+        <hr />
+        <form onSubmit={handleSubmit} data-testid="newQuestionForm">
+          <div className="form-group">
+            <input
+              type="text"
+              className="form-control"
+              style={errorInputName ? { borderColor: '#F00' } : {}}
+              id="name"
+              maxLength="255"
+              value={inputName}
+              onChange={(e) => {
+                setInputName(e.target.value);
+              }}
+              placeholder="Nome do usuário"
+            />
+            {errorInputName && (
+              <small id="errorName" className="form-text text-muted">
+                Nome do usuário deve conter no mínimo 3 caracteres.
+              </small>
+            )}
+          </div>
+          <div className="form-group">
+            <textarea
+              className="form-control"
+              id="text"
+              rows={3}
+              style={errorInputText ? { borderColor: '#F00' } : {}}
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              placeholder="Pergunta"
+            />
+            {errorInputText && (
+              <small id="errorText" className="form-text text-muted">
+                Pergunta deve conter no mínimo 10 caracteres.
+              </small>
+            )}
+          </div>
+
+          <FormButtonContainer>
+            <button
+              data-testid="newQuestionButton"
+              type="submit"
+              className="btn btn-outline-primary btn-sm "
+            >
+              Perguntar
+            </button>
+          </FormButtonContainer>
+        </form>
+      </NewQuestionContainer>
+      <ListQuestion data-testid="ListQuestion">
+        {listQuestion.map((question) => (
+          <ItemQuestion object={question} key={question.id} />
+        ))}
+        {loading && <LoadingComponent />}
+      </ListQuestion>
+      {!loading && listQuestion.length === 0 && (
+        <NoQuestions data-testid="noQuestions">
+          Nenhuma pergunta, seja o primeiro a perguntar!
+        </NoQuestions>
+      )}
+      <ToastContainer />
     </Container>
   );
 }
